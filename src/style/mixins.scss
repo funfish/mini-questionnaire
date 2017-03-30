@@ -1,0 +1,23 @@
+@import "./veriable.scss";
+@mixin box-sizing ($sizing) {
+    webkit-box-sizing: $sizing;     
+       moz-box-sizing: $sizing;
+           box-sizing: $sizing;
+}
+@mixin size($width: auto, $height: auto) {
+	width: $width;
+	height: $height;
+}
+@mixin button() {
+	@include size(4.5em, 1.5em);
+	border: 1px solid $gray;
+	border-radius: .2em;
+	background-color: white;
+	text-align: center;
+	cursor: pointer;
+	&:hover {
+		border-color: $orange;
+		background-color: $orange;
+		color: white;
+	}
+}

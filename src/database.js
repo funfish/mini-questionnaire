@@ -1,4 +1,5 @@
 export var dataTest = [{
+		checkStatus: false,
 		title: "测试",
 		time: "2016-05-21 20:21:22",
 		status: "已结束",
@@ -21,6 +22,7 @@ export var dataTest = [{
 		]
 	}];
 export var initData = {
+		checkStatus: false,
 		title: "这里是标题",
 		time: "",
 		status: "未发布",
@@ -31,7 +33,8 @@ export var initData = {
 	};
 export var database = {
 		fetch: function(data) {
-			var dataChoose = JSON.parse(localStorage.getItem("data")) || data;
+			//var dataChoose = JSON.parse(localStorage.getItem("data")) || data;
+			var dataChoose = data;
 			dataChoose.forEach(function(item, i) {
 				item.id = i + 1;
 			})

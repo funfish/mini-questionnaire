@@ -41,7 +41,7 @@
 					<calendar v-if="showCalendar" :time="copy.time" @change-date="changeDate"></calendar>
 				</div>
 				<button @click="maskRlease">发布问卷</button>
-				<button @click="$emit('save-qn', copy, $route.params.id)">保存问卷</button>
+				<button @click="$emit('save-qn', copy, $route.path ==='/newqn' ? -1 : $route.params.id)">保存问卷</button>
 			</div>
 		</div>
 	</div>
@@ -49,6 +49,7 @@
 
 <script>
 	import "../library";
+	import {initData} from "../database";
 	import {bus} from "./bus";
 
 	export default { 
@@ -57,7 +58,7 @@
 		data() {
 			return {
 				maskMessageQn: [],
-				qnData: this.data[this.$route.params.id - 1],
+				qnData: this.$route.path === "/newqn" ? clone(initData) : this.data[this.$route.params.id - 1],
 				copy: {},
 				showCalendar: false,
 				hiddenAdd: true
@@ -65,7 +66,7 @@
 		},
 		created() {
 			this.copy = clone(this.qnData);
-			bus.$on("confirm-release", () => {this.$emit("confirm-release", this.copy, this.$route.params.id)}
+			bus.$on("confirm-release", () => {this.$emit("confirm-release", this.copy, this.$route.path === "/newqn" ? -1 : this.$route.params.id)}
 			)
 		},
 		methods: {
@@ -136,7 +137,7 @@
 
 				this.$emit('show-mask');
 				setTimeout(() => {
-					bus.$emit('mask-handle', this.maskMessageQn, this.$route.params.id - 1);
+					bus.$emit('mask-handle', this.maskMessageQn, this.$route.path === "/newqn" ? -1 : this.$route.params.id - 1);
 				}, 0)
 			}
 		} 
@@ -236,7 +237,8 @@
 	line-height: 1rem;
 	button {
 		margin-left: 1rem;
-		@include size(6rem, 1.5rem);
+		@include size(6rem, 1.8rem);
+		line-height: 1.8rem;
 		text-align: center;
 		background-color: $BackGray;
 		cursor: pointer;

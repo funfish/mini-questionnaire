@@ -8,10 +8,10 @@
 			</router-link>
 		</div>
 		<div id="container">
-			<router-view :data="qnDataAll" @show-mask="showMask = true" @save-qn="saveQn" @confirm-delete="removeQn" @confirm-release="releaseQn" @add-qn="addQn"></router-view>		
+			<router-view :data="qnDataAll" @show-mask="showMask = true" @save-qn="saveQn" @confirm-delete="deleteQn" @confirm-release="releaseQn" @check-all="checkAllFn" @confirm-delete-some="deleteSome"></router-view>		
 		</div>
 		<maskcover v-if="showMask" @close="showMask = false">
-		</maskcover>		
+		</maskcover>
 	</div>
 </template>
 
@@ -26,26 +26,42 @@ export default {
 		return {
 			qnDataAll: database.fetch(dataTest),
 			new: "",
-			showMask: false			
+			showMask: false,
+			checkAll: false			
 		}
 	},
 	methods: {
-		removeQn: function(id) {
+		deleteQn: function(id) {
 			this.qnDataAll.splice(id - 1, 1);
 			database.save(this.qnDataAll);
 		},
-		saveQn: function(qnData, seq) {
-			this.qnDataAll[seq - 1] = qnData;
-			database.save(this.qnDataAll);
+		deleteSome() {
+			for(let i = 0; i < this.qnDataAll.length; i++) {
+				if(this.qnDataAll[i].checkStatus) {
+					this.qnDataAll.splice(i, 1);
+					i--;
+				}				
+			}
+		},
+		saveQn: function(qnData, id) {
+			if(id !== -1) {
+				this.qnDataAll.splice(id - 1, 1, clone(qnData));
+			} else {
+				if(qnData.id !== (this.qnDataAll.length === 0 ? 0 : this.qnDataAll[this.qnDataAll.length - 1].id)) {
+					qnData.id = this.qnDataAll.length === 0 ? 0 : this.qnDataAll[this.qnDataAll.length - 1].id  + 1
+					this.qnDataAll.push(qnData);
+				}else {
+					this.qnDataAll.splice(this.qnDataAll.length - 1, 1, clone(qnData));
+				}
+			}
+			database.save(this.qnDataAll);				
 		},
 		releaseQn: function(qnData, id) {
 			qnData.status = "已发布";
-			this.qnDataAll.splice(id - 1, 1, clone(qnData));
+			this.saveQn(qnData, id);
 		},
-		addQn: function() {
-			var newQn = clone(initData);
-			newQn.id = this.qnDataAll.length + 1;
-			this.qnDataAll.push(newQn);
+		checkAllFn(flag) {
+			this.qnDataAll.forEach((item) => item.checkStatus = !flag)
 		}
 	},
 	components: {
@@ -87,8 +103,8 @@ li {
 	height: 100%;
 }
 #head {
-	@include size(100%, 2.5rem);
-	line-height: 2.5rem; 
+	@include size(100%, 4rem);
+	line-height: 4rem; 
 	background-color: $orange;
 	font-size: 1.6rem;
 	color: $white;

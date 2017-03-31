@@ -34,7 +34,7 @@
 		},
 		methods: {
 			confirm() {
-				if(this.$route.path === "/" || this.$route.path === "/newqn") {
+				if(this.$route.path === "/") {
 					bus.$emit("confirm-delete", this.qnId);
 					this.$emit("close");	
 					this.$router.push("/");			

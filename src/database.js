@@ -33,8 +33,7 @@ export var initData = {
 	};
 export var database = {
 		fetch: function(data) {
-			//var dataChoose = JSON.parse(localStorage.getItem("data")) || data;
-			var dataChoose = data;
+			var dataChoose = JSON.parse(localStorage.getItem("data")) || data;
 			dataChoose.forEach(function(item, i) {
 				item.id = i + 1;
 			})

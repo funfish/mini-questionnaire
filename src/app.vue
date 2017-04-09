@@ -31,7 +31,7 @@ export default {
 		}
 	},
 	methods: {
-		deleteQn: function(id) {
+		deleteQn(id) {
 			this.qnDataAll.splice(id - 1, 1);
 			database.save(this.qnDataAll);
 		},
@@ -42,8 +42,9 @@ export default {
 					i--;
 				}				
 			}
+			database.save(this.qnDataAll);
 		},
-		saveQn: function(qnData, id) {
+		saveQn(qnData, id) {
 			if(id !== -1) {
 				this.qnDataAll.splice(id - 1, 1, clone(qnData));
 			} else {
@@ -56,7 +57,7 @@ export default {
 			}
 			database.save(this.qnDataAll);				
 		},
-		releaseQn: function(qnData, id) {
+		releaseQn(qnData, id) {
 			qnData.status = "已发布";
 			this.saveQn(qnData, id);
 		},

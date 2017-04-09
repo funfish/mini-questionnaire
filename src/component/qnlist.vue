@@ -47,7 +47,7 @@
 				<label for="checkAll" @click="$emit('check-all', checkAll)"></label>
 			</div>
 			全选	
-			<button @click="maskHandleQnList(-1)">删除</button>
+			<button @click="maskHandleQnList(-2)">删除</button>
 		</ul>
 	</div>
 </template>
@@ -60,12 +60,13 @@
 		data() {
 			return	{
 				maskMessageQnList: ["确认要删除此问卷？"],
+				maskMessageQnList2: ["确认要删除这些问卷？"],
 				checkAll: false
 			}
 		},
 		created() {
 			bus.$on("confirm-delete", (id) => {
-				if(id !== -1) {
+				if(id !== -2) {
 					this.$emit("confirm-delete", id);
 				} else {
 					this.$emit("confirm-delete-some");
@@ -76,7 +77,7 @@
 			maskHandleQnList(id) {
 				this.$emit('show-mask');
 				setTimeout(() => {
-					bus.$emit('mask-handle', this.maskMessageQnList, id);				
+					bus.$emit('mask-handle', id === -2 ? this.maskMessageQnList2 : this.maskMessageQnList, id);				
 				}, 0)
 			}
 		}
@@ -169,7 +170,7 @@ ul.qnList-title > li{
 ul.qnList-title > .checkbox-round {
 	position: static;
 	float: left;
-	margin: .3rem 1rem 0 1rem;
+	margin: .3rem 1rem 0 1.13rem;
 	label {
 		top: -1.7rem;
 	}

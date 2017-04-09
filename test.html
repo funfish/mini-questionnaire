@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-cnm-hans">
+	<meta charset="UTF-8">
+	<style>
+		.contain {
+			border: 2px solid red;
+		}
+		.contain:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+		.left{
+			float: right;
+			width: 100px;
+			height: 100px;
+			border: 2px solid blue;
+		}
+		.right {
+			margin-right: 100px;
+			width: 100px;
+			height: 200px;
+			border: 2px solid green;
+		}
+	</style>
+</head>
+<body>
+	<div class="contain">
+		<div class="left"></div>
+		<div class="right"></div>
+	</div>
+	<script>
+		alert(111)
+	</script>
+</body>
+</html>

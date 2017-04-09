@@ -1,9 +1,8 @@
 define(function() {
 	function maskCover() {
-		var mask = document.createElement("div");
-		mask.className = "mask";
-		mask.innerHTML = 		
-			'<div id="dia-window">' +
+		var mask = $('<div class="mask"></div>');
+		mask.addClass("mask");
+		mask.html('<div id="dia-window">' +
 				'<div id="dia-head">' +
 					'<b>提示</b>' +
 					'<span>×</span>' +
@@ -15,21 +14,21 @@ define(function() {
 						'<button>取消</button>' +		
 					'</div>' +
 				'</div>' +
-			'</div>';	
-		mask.style.height = document.body.clientHeight + "px";
-		document.body.appendChild(mask);
+			'</div>');
+		mask.css("height", $(document).height() + "px");
+		$(document.body).append(mask);
 
-		var maskbox = document.querySelector(".mask");
-		document.getElementById('dia-head').querySelector("span").onclick = function() {
-			document.body.removeChild(maskbox);
-			document.body.style = "";
-			document.body.className = "";
-		}	
-		document.getElementById('dia-choose').querySelectorAll("button")[1].onclick = function() {
-			document.body.removeChild(maskbox);
-			document.body.style = "";
-			document.body.className = "";
-		}	
+		$("#dia-head span").on("click", function() {
+			mask.remove();
+			$(document.body).removeAttr("style");
+			$(document.body).removeClass();
+		});
+		$("#dia-choose button:nth(1)").on("click", function() {
+			mask.remove();
+			console.log(1);
+			$(document.body).removeAttr("style");
+			$(document.body).removeClass();
+		});
 	}
 
 	return {

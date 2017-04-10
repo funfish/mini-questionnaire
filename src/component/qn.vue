@@ -41,7 +41,7 @@
 					<calendar v-if="showCalendar" :time="copy.time" @change-date="changeDate"></calendar>
 				</div>
 				<button @click="maskRlease">发布问卷</button>
-				<button @click="$emit('save-qn', copy, $route.path ==='/newqn' ? -1 : $route.params.id)">保存问卷</button>
+				<button @click="saveQn(copy, $route.path ==='/newqn' ? -1 : $route.params.id)">保存问卷</button>
 			</div>
 		</div>
 	</div>
@@ -61,15 +61,29 @@
 				qnData: this.$route.path === "/newqn" ? clone(initData) : this.data[this.$route.params.id - 1],
 				copy: {},
 				showCalendar: false,
-				hiddenAdd: true
+				hiddenAdd: true,
 			}
 		},
 		created() {
 			this.copy = clone(this.qnData);
-			bus.$on("confirm-release", () => {this.$emit("confirm-release", this.copy, this.$route.path === "/newqn" ? -1 : this.$route.params.id)}
-			)
+		},
+		computed: {
+			releaseFlag() {
+				return this.$store.state.releaseFlag;
+			}
+		},
+		watch: {
+			releaseFlag() {
+				if(this.releaseFlag) {
+					this.copy.status = "已发布";
+					this.$store.commit("saveQn", {qnData: this.copy, id: this.$route.path === "/newqn" ? -1 : this.$route.params.id})
+				}
+			}
 		},
 		methods: {
+			saveQn(qnData, id) {
+				this.$store.commit("saveQn", {qnData, id});
+			},
 			up(seq) {
 				if(seq > 0) {
 					this.temp = this.copy.qn[seq - 1];
@@ -136,9 +150,7 @@
 				}
 
 				this.$emit('show-mask');
-				setTimeout(() => {
-					bus.$emit('mask-handle', this.maskMessageQn, this.$route.path === "/newqn" ? -1 : this.$route.params.id - 1);
-				}, 0)
+				this.$nextTick(() => bus.$emit('mask-handle', this.maskMessageQn, this.$route.path === "/newqn" ? -1 : this.$route.params.id - 1))
 			}
 		} 
 	};

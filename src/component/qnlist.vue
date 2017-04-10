@@ -44,7 +44,7 @@
 			</li>
 			<div class="checkbox-round">
 				<input type="checkbox" id="checkAll" v-model="checkAll">
-				<label for="checkAll" @click="$emit('check-all', checkAll)"></label>
+				<label for="checkAll" @click="checkAllFn"></label>
 			</div>
 			全选	
 			<button @click="maskHandleQnList(-2)">删除</button>
@@ -64,16 +64,10 @@
 				checkAll: false
 			}
 		},
-		created() {
-			bus.$on("confirm-delete", (id) => {
-				if(id !== -2) {
-					this.$emit("confirm-delete", id);
-				} else {
-					this.$emit("confirm-delete-some");
-				}
-			})
-		},
 		methods: {
+			checkAllFn() {
+				this.$store.commit("checkAllFn", this.checkAll)
+			},
 			maskHandleQnList(id) {
 				this.$emit('show-mask');
 				setTimeout(() => {

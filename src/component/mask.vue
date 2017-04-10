@@ -35,14 +35,17 @@
 		methods: {
 			confirm() {
 				if(this.$route.path === "/") {
-					bus.$emit("confirm-delete", this.qnId);
+					this.$store.commit("delete", this.qnId);
 					this.$emit("close");	
 					this.$router.push("/");			
 				} else {
 					if(this.showMessage.length > 1) {
-						bus.$emit("confirm-release");
+						this.$store.commit("changeReleaseFlag");
 						this.$emit("close");
-						this.$router.push("/");	
+						this.$nextTick(() => {
+							this.$router.push("/");
+							this.$store.commit("changeReleaseFlag");
+						})
 					} else {
 						this.$emit("close");
 					}

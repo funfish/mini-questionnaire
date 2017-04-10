@@ -8,7 +8,7 @@
 			</router-link>
 		</div>
 		<div id="container">
-			<router-view :data="qnDataAll" @show-mask="showMask = true" @save-qn="saveQn" @confirm-delete="deleteQn" @confirm-release="releaseQn" @check-all="checkAllFn" @confirm-delete-some="deleteSome"></router-view>		
+			<router-view :data="qnDataAll" @show-mask="showMask = true" @confirm-release="releaseQn"></router-view>		
 		</div>
 		<maskcover v-if="showMask" @close="showMask = false">
 		</maskcover>
@@ -24,45 +24,18 @@ export default {
 	name: "app",
 	data: function() {
 		return {
-			qnDataAll: database.fetch(dataTest),
-			new: "",
-			showMask: false,
-			checkAll: false			
+			showMask: false
+		}
+	},
+	computed: {
+		qnDataAll() {
+			return this.$store.state.qnDataAll
 		}
 	},
 	methods: {
-		deleteQn(id) {
-			this.qnDataAll.splice(id - 1, 1);
-			database.save(this.qnDataAll);
-		},
-		deleteSome() {
-			for(let i = 0; i < this.qnDataAll.length; i++) {
-				if(this.qnDataAll[i].checkStatus) {
-					this.qnDataAll.splice(i, 1);
-					i--;
-				}				
-			}
-			database.save(this.qnDataAll);
-		},
-		saveQn(qnData, id) {
-			if(id !== -1) {
-				this.qnDataAll.splice(id - 1, 1, clone(qnData));
-			} else {
-				if(qnData.id !== (this.qnDataAll.length === 0 ? 0 : this.qnDataAll[this.qnDataAll.length - 1].id)) {
-					qnData.id = this.qnDataAll.length === 0 ? 0 : this.qnDataAll[this.qnDataAll.length - 1].id  + 1
-					this.qnDataAll.push(qnData);
-				}else {
-					this.qnDataAll.splice(this.qnDataAll.length - 1, 1, clone(qnData));
-				}
-			}
-			database.save(this.qnDataAll);				
-		},
 		releaseQn(qnData, id) {
 			qnData.status = "已发布";
-			this.saveQn(qnData, id);
-		},
-		checkAllFn(flag) {
-			this.qnDataAll.forEach((item) => item.checkStatus = !flag)
+			this.$store.commit("saveQn", {qnData, id});
 		}
 	},
 	components: {
@@ -117,7 +90,7 @@ li {
 		margin-left: 3rem;
 		text-decoration: none;
 		color: white;
-		font-size: 0.8rem;
+		font-size: 1.2rem;
 		cursor: pointer;
 	}
 }

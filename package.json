@@ -1,5 +1,5 @@
 {
-  "name": "task50-Vue",
+  "name": "mini-questionnaire",
   "version": "0.0.1",
   "description": "task50 Vue",
   "main": "main.js",
@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "vue": "^2.2.6",
-    "vue-router": "^2.3.0"
+    "vue-router": "^2.3.0",
+    "vuex": "^2.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",

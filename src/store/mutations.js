@@ -33,5 +33,10 @@ export default {
 	},
 	changeReleaseFlag(state) {
 		state.releaseFlag = !state.releaseFlag;
+	},
+	mask(state, {maskMessage = [""], maskId = 0} = {}) {
+		state.maskMessage = maskMessage;
+		state.showMask = !state.showMask;
+		state.maskId = maskId;
 	}
 }

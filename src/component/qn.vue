@@ -148,9 +148,9 @@
 				} else {
 					this.maskMessageQn = ["请选择发布时间"]
 				}
-
-				this.$emit('show-mask');
-				this.$nextTick(() => bus.$emit('mask-handle', this.maskMessageQn, this.$route.path === "/newqn" ? -1 : this.$route.params.id - 1))
+				this.$store.commit("mask", {maskMessage: this.maskMessageQn, maskId: this.$route.path === "/newqn" ? -1 : this.$route.params.id - 1})
+				//this.$emit('show-mask');
+				//this.$nextTick(() => bus.$emit('mask-handle', this.maskMessageQn, this.$route.path === "/newqn" ? -1 : this.$route.params.id - 1))
 			}
 		} 
 	};

@@ -8,9 +8,9 @@
 			</router-link>
 		</div>
 		<div id="container">
-			<router-view :data="qnDataAll" @show-mask="showMask = true" @confirm-release="releaseQn"></router-view>		
+			<router-view :data="qnDataAll" @confirm-release="releaseQn"></router-view>		
 		</div>
-		<maskcover v-if="showMask" @close="showMask = false">
+		<maskcover v-if="showMask">
 		</maskcover>
 	</div>
 </template>
@@ -22,14 +22,12 @@ import maskCover from "./component/mask.vue";
 
 export default {
 	name: "app",
-	data: function() {
-		return {
-			showMask: false
-		}
-	},
 	computed: {
 		qnDataAll() {
 			return this.$store.state.qnDataAll
+		},
+		showMask() {
+			return this.$store.state.showMask
 		}
 	},
 	methods: {

@@ -69,10 +69,11 @@
 				this.$store.commit("checkAllFn", this.checkAll)
 			},
 			maskHandleQnList(id) {
-				this.$emit('show-mask');
-				setTimeout(() => {
+				this.$store.commit("mask", {maskMessage: id === -2 ? this.maskMessageQnList2 : this.maskMessageQnList, maskId: id})
+				//this.$emit('show-mask');
+				/*setTimeout(() => {
 					bus.$emit('mask-handle', id === -2 ? this.maskMessageQnList2 : this.maskMessageQnList, id);				
-				}, 0)
+				}, 0)*/
 			}
 		}
 	};

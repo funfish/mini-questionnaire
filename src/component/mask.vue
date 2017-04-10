@@ -3,13 +3,13 @@
 		<div id="dia-window">
 			<div id="dia-head">
 				<b>提示</b>
-				<span @click="$emit('close')">×</span>
+				<span @click="cancel">×</span>
 			</div>
 			<div id="dia-container">
 				<span v-for="item in showMessage">{{ item }}<br/></span>
 				<div id="dia-choose">
 					<button @click="confirm">确认</button>
-					<button @click="$emit('close')">取消</button>
+					<button @click="cancel">取消</button>
 				</div>
 			</div>
 		</div>	
@@ -21,35 +21,46 @@
 		name: "maskCover",
 		data() {
 			return {
-				showMessage: "",
-				qnId: 0,
 				boxHeight: document.body.clientHeight + "px"
+			}
+		},
+		computed: {
+			showMessage() {
+				return this.$store.state.maskMessage
+			},
+			maskId() {
+				return this.$store.state.maskId
 			}
 		},
 		beforeCreate() {
 			bus.$on("mask-handle", (message, seq) =>{
 				this.showMessage = message;
-				this.qnId = seq;
+				this.maskId = seq;
 			})
 		},
 		methods: {
 			confirm() {
 				if(this.$route.path === "/") {
-					this.$store.commit("delete", this.qnId);
-					this.$emit("close");	
+					this.$store.commit("delete", this.maskId);
+					this.$store.commit("mask");
+					//this.$emit("close");	
 					this.$router.push("/");			
 				} else {
 					if(this.showMessage.length > 1) {
 						this.$store.commit("changeReleaseFlag");
-						this.$emit("close");
+						this.$store.commit("mask");
+						//this.$emit("close");
 						this.$nextTick(() => {
 							this.$router.push("/");
 							this.$store.commit("changeReleaseFlag");
 						})
 					} else {
-						this.$emit("close");
+						this.$store.commit("mask");
 					}
 				}
+			},
+			cancel() {
+				this.$store.commit("mask");
 			}
 		}
 	};
